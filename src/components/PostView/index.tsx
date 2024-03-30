@@ -14,6 +14,12 @@ const PostView: React.FC<{ postId: string }> = ({ postId }) => {
     });
   }, [postId]);
 
+  const deletePost = () => {
+    axios.post(`${SERVICE_URI}/delete`, {post_id: postId}).then((response) => {
+      console.log(response.data);
+    })
+  }
+
   return (
     <>
       {postData && (
@@ -31,9 +37,10 @@ const PostView: React.FC<{ postId: string }> = ({ postId }) => {
             <div>{postData.content}</div>
             <div className="cta-container">
               <span className="cta-button cta-solid">Regenerate</span>
-              <span className="cta-button">Delete</span>
+              <span className="cta-button" onClick={() => deletePost()}>Delete</span>
             </div>
           </div>
+          <br/><br/><br/><br/><br/>
         </>
       )}
     </>
