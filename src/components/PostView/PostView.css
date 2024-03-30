@@ -1,0 +1,29 @@
+.view-container {
+  background-color: rgb(102, 99, 114, 0.7);
+  padding: 1em;
+}
+
+.tags-container {
+  display: flex;
+  margin-bottom: 25px;
+}
+
+.tags {
+  margin: 10px;
+  background-color: #2e2c35;
+  padding: 10px;
+}
+
+.cta-container {
+  margin-top: 25px;
+  display: flex;
+}
+
+.cta-button {
+  margin: 10px;
+  padding: 10px;
+}
+
+.cta-solid {
+  background-color: #2e2c35;
+}

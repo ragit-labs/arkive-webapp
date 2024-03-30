@@ -1,12 +1,16 @@
-import { useState } from "react";
-import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { useEffect } from "react";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../../context/AuthContext";
 import { authenticate, getUser } from "../../utils/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { user: currentUser, setUser } = useAuth();
+  const navigate = useNavigate();
 
-  const [profile, setProfile] = useState(null);
+  useEffect(() => {
+    currentUser && navigate("/home");
+  }, [currentUser]);
 
   const loginUser = async (googleAccessToken: string) => {
     try {
@@ -25,29 +29,12 @@ const Login = () => {
     onError: (error) => console.log("Login Failed:", error),
   });
 
-  const logOut = () => {
-    googleLogout();
-    setProfile(null);
-  };
-
   return (
     <div>
       <h2>Google Login</h2>
       <br />
       <br />
-      {profile ? (
-        <div>
-          <img src={currentUser?.profilePicture} alt="user image" />
-          <h3>User Logged in</h3>
-          <p>Name: {currentUser?.name}</p>
-          <p>Email Address: {currentUser?.email}</p>
-          <br />
-          <br />
-          <button onClick={logOut}>Log out</button>
-        </div>
-      ) : (
-        <button onClick={login}>Sign in with Google 🚀 </button>
-      )}
+      <button onClick={() => login()}>Sign in with Google 🚀 </button>
     </div>
   );
 };

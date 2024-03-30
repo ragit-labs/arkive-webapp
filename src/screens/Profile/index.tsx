@@ -4,7 +4,7 @@ const Profile = () => {
   const { user } = useAuth();
   return (
     <>
-      <p>Name: {user?.full_name}</p>
+      <p>Name: {user?.firstName}</p>
       <p>Email: {user?.email}</p>
     </>
   );

@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { ReactFCWithChildren } from "../types";
-import useCookie from "../utils/cookie";
+import Cookies from "js-cookie";
 import axios from "axios";
+import { SERVICE_URI } from "../config";
 
 type ICurrentUser = {
   token: string;
@@ -16,12 +17,11 @@ const UserContext = createContext<ICurrentUser | undefined>(undefined);
 
 const UserProvider: React.FC<ReactFCWithChildren> = ({ children }) => {
   const [user, setUser] = useState<ICurrentUser | undefined>(undefined);
-  const [accessToken, setAccessToken, deleteAccessToken] =
-    useCookie("accessToken");
+  const accessToken = Cookies.get("accessToken");
 
   useEffect(() => {
     axios
-      .post("http://localhost:8000/google/getUser", {
+      .post(`${SERVICE_URI}/google/getUser`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           Accept: "application/json",

@@ -1,12 +1,17 @@
+import { useNavigate } from "react-router-dom";
+
 interface PostCardProp {
   banner: string;
-  description: string;
+  content: string;
+  id: string;
 }
 
-const PostCard: React.FC<PostCardProp> = ({ banner, description }) => {
+const PostCard: React.FC<PostCardProp> = ({ banner, content, id }) => {
+  const navigate = useNavigate();
   return (
     <>
       <div
+        onClick={() => navigate(`/view/${id}`)}
         className="post-card"
         style={{
           top: "0",
@@ -16,7 +21,7 @@ const PostCard: React.FC<PostCardProp> = ({ banner, description }) => {
           width: "30vw",
         }}
       >
-        <p>{description}</p>
+        <p>{content}</p>
       </div>
     </>
   );
