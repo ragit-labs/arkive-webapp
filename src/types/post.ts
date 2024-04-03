@@ -2,6 +2,10 @@ export type IPostMetadata = {
   author?: string;
 };
 
+export type Tag = {
+  name: string;
+}
+
 export type IPost = {
   id: string;
   title: string;
@@ -10,4 +14,5 @@ export type IPost = {
   banner: string;
   timestamp: string;
   extra_metadata?: IPostMetadata;
+  tags: Tag[];
 };

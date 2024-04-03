@@ -1,0 +1,16 @@
+.navigation-bar {
+    position: fixed;
+    top: 0;
+    display: flex;
+    width: 100%;
+}
+
+.navigation-links {
+    padding: 10px;
+    margin: 30px;
+}
+
+.navigation-links.clickable:hover {
+    cursor: pointer;
+    background-color: red;
+}

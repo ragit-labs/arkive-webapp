@@ -6,20 +6,28 @@ import { useAuth } from "../../context/AuthContext";
 import { IPost } from "../../types/post";
 import "../../css/Home.css";
 import PostView from "../../components/PostView";
+import NavigationBar from "../../components/Navigation";
 
 const Home = () => {
   const [data, setData] = useState<IPost[]>([]);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const [itemData, setItemData] = useState<IPost | null>(null);
 
+  const removePost = (postId: string) => {
+    setData(data.filter((post) => post.id !== postId));
+    setItemData(null);
+  };
+
   useEffect(() => {
-    !user && navigate("/login");
-    axios.get(`${SERVICE_URI}/all`).then((response) => {
-      setData(response.data);
-    });
-  }, [user]);
+    if(!loading) {
+      !user && navigate("/login");
+      axios.get(`${SERVICE_URI}/all`).then((response) => {
+        setData(response.data);
+      });
+    }
+  }, [user, loading, navigate]);
 
   const handleClick = async (postId: string) => {
     try {
@@ -30,9 +38,11 @@ const Home = () => {
       setItemData(null);
     }
   };
+  
 
   return (
     <>
+    <NavigationBar />
       <div className="home-container">
         <div className="home-container-inner">
           {data.map((data, i) => (
@@ -52,7 +62,7 @@ const Home = () => {
         </div>
         <div className="home-container-inner">
           {itemData ? (
-            <PostView postId={itemData.id} />
+            <PostView postId={itemData.id} onPostDelete={removePost} />
           ) : (
             <div>Select something plis</div>
           )}

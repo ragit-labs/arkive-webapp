@@ -14,7 +14,7 @@ const View = () => {
         marginBottom: "100px",
       }}
     >
-      {postId && <PostView postId={postId} />}
+      {postId && <PostView postId={postId}/>}
     </div>
   );
 };

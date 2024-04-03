@@ -7,10 +7,10 @@ const NavigationBar = () => {
   return (
     <>
       <div className="navigation-bar">
-        <p>{`${APP_NAME}`}</p>
-        <p onClick={() => navigate("/home")}>Home</p>
-        <p onClick={() => navigate("/profile")}>Profile</p>
-        <p onClick={() => navigate("/logout")}>Logout</p>
+        <p className="navigation-links">{`${APP_NAME}`}</p>
+        <p className="navigation-links clickable" onClick={() => navigate("/")}>Home</p>
+        <p className="navigation-links clickable" onClick={() => navigate("/profile")}>Profile</p>
+        <p className="navigation-links clickable" onClick={() => navigate("/logout")}>Logout</p>
       </div>
     </>
   );

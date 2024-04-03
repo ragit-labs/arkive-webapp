@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { Navigate } from "react-router-dom";
-import { logout } from "../../utils/logout";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { googleLogout } from "@react-oauth/google";
+import Cookies from "js-cookie";
 
 const Logout = () => {
-  const { user } = useAuth();
 
-  const [loggedOut, setLoggedOut] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
-    if (user) {
-      logout();
-      setLoggedOut(true);
-    }
-  });
-  return <>{loggedOut && <Navigate to="/" />}</>;
+      Cookies.remove("accessToken", { path: '/', domain: 'localhost' });
+      googleLogout();
+      navigate("/login");
+  }, [navigate]);
+  return null;
 };
 
 export default Logout;

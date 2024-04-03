@@ -9,8 +9,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    currentUser && navigate("/home");
-  }, [currentUser]);
+    currentUser && navigate("/");
+  }, [currentUser, navigate]);
 
   const loginUser = async (googleAccessToken: string) => {
     try {

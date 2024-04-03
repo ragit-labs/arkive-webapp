@@ -1,8 +1,11 @@
 export type IUserInfo = {
-  token: string;
-  firstName: string;
-  lastName?: string;
-  name: string;
+  display_picture_url: string;
   email: string;
-  profilePicture: string;
+  extra_metadata: string;
+  first_name: string;
+  full_name?: string;
+  id: string;
+  last_name: string;
+  password: string | null;
+  signin_provider: string;
 };

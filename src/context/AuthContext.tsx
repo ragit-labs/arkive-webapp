@@ -1,13 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useMemo } from "react";
 import Cookies from "js-cookie";
 import { IUserInfo } from "../types/user";
-import { getUser } from "../utils/auth";
 import { ReactFCWithChildren } from "../types";
+import axios from "axios";
+import { SERVICE_URI } from "../config";
 
 interface AuthContextType {
   user: IUserInfo | null;
   isAuthenticated: boolean;
   setUser: (user: IUserInfo | null) => void;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,18 +17,27 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<ReactFCWithChildren> = ({ children }) => {
   const [user, setUser] = useState<IUserInfo | null>(null);
   const isAuthenticated = !!user;
+  const [loading, setLoading] = useState(true);
+  const token = Cookies.get("accessToken");
 
-  useEffect(() => {
-    const token = Cookies.get("accessToken");
+  useMemo(() => {
     if (token) {
-      getUser()
-        .then(setUser)
-        .catch(() => Cookies.remove("accessToken"));
+      !user && axios.get(`${SERVICE_URI}/users/me`)
+        .then((response) => {
+          setUser(response.data);
+          setLoading(false);
+        })
+        .catch(() => {
+          Cookies.remove("accessToken")
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, setUser }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, setUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
