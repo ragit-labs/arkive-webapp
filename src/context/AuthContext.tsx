@@ -22,15 +22,17 @@ export const AuthProvider: React.FC<ReactFCWithChildren> = ({ children }) => {
 
   useMemo(() => {
     if (token) {
-      !user && axios.get(`${SERVICE_URI}/users/me`)
-        .then((response) => {
-          setUser(response.data);
-          setLoading(false);
-        })
-        .catch(() => {
-          Cookies.remove("accessToken")
-          setLoading(false);
-        });
+      !user &&
+        axios
+          .get(`${SERVICE_URI}/users/me`)
+          .then((response) => {
+            setUser(response.data);
+            setLoading(false);
+          })
+          .catch(() => {
+            Cookies.remove("accessToken");
+            setLoading(false);
+          });
     } else {
       setLoading(false);
     }

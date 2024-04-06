@@ -1,17 +1,42 @@
 .view-container {
-  background-color: rgb(102, 99, 114, 0.7);
-  padding: 1em;
+  position: relative;
+  background-color: rgb(26, 26, 26, 1);
+  top: 0%;
+}
+
+.view-container-header {
+  padding: 3em;
+  background: url("../../assets/images/post-bg.png");
+}
+
+.view-container h1 {
+  color: white;
+  font-weight: bold;
+}
+
+.view-container h3 {
+  color: rgb(195, 195, 195);
+  font-weight: normal;
+}
+
+.view-container-content {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .tags-container {
-  display: flex;
+  /* display: flex; */
   margin-bottom: 25px;
+  text-align: center;
 }
 
 .tags {
+  font-size: 0.7rem;
   margin: 10px;
-  background-color: #2e2c35;
-  padding: 10px;
+  padding: 0.3rem 0.5rem;
+  display: inline-block;
+  color: white;
+  font-weight: normal;
+  border: 1px solid white;
 }
 
 .cta-container {

@@ -1,23 +1,47 @@
 .home-container {
   display: flex;
   height: 100vh;
-  width: 90vw;
+  width: 100vw;
   position: fixed;
-  left: 5vw;
-  top: 100px;
 }
 
 .home-container-inner {
-  flex: 1;
   overflow: auto;
-  padding: 20px;
+}
+
+.home-container-inner.left {
+  flex: 60%;
+}
+
+.home-container-inner.right {
+  flex: 40%;
+}
+
+.home-search-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 200px;
+}
+
+.home-post-link-container {
+  padding: 0em 4em;
+}
+
+.post-link-date-heading {
+  font-size: 2.8rem;
+  font-weight:500;
+  margin-top: 5rem;
 }
 
 .post-link-items {
   margin-bottom: 10px;
+  padding: 1em 3em;
   cursor: pointer;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
 .post-link-items:hover {
-  background-color: gray;
+  background-color: black;
+  color: white;
 }

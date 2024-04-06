@@ -24,7 +24,6 @@ export const ProtectedRoute = () => {
 };
 
 const Routes = () => {
-
   const routesForPublic = [
     {
       path: "/view/:postId",

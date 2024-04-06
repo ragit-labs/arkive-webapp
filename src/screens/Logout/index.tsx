@@ -5,12 +5,11 @@ import { googleLogout } from "@react-oauth/google";
 import Cookies from "js-cookie";
 
 const Logout = () => {
-
   const navigate = useNavigate();
   useEffect(() => {
-      Cookies.remove("accessToken", { path: '/', domain: 'localhost' });
-      googleLogout();
-      navigate("/login");
+    Cookies.remove("accessToken", { path: "/", domain: "localhost" });
+    googleLogout();
+    navigate("/login");
   }, [navigate]);
   return null;
 };

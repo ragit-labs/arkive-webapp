@@ -11,10 +11,11 @@ const View = () => {
         left: "50%",
         transform: "translateX(-50%)",
         top: "100px",
+        width: "40%",
         marginBottom: "100px",
       }}
     >
-      {postId && <PostView postId={postId}/>}
+      {postId && <PostView postId={postId} />}
     </div>
   );
 };
