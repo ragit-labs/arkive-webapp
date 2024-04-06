@@ -10,7 +10,7 @@ export const authenticate = async (
     google_access_token: googleAccessToken,
   });
   const { access_token: accessToken } = response.data;
-  Cookies.set("accessToken", accessToken, { expires: 1 }); // Expires in 1 day
+  Cookies.set("accessToken", accessToken, { expires: 59 });
   return accessToken;
 };
 
