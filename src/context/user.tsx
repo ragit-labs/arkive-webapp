@@ -28,7 +28,14 @@ const UserProvider: React.FC<ReactFCWithChildren> = ({ children }) => {
         },
       })
       .then((response) => {
-        setUser(response);
+        setUser({
+          token: accessToken ?? "",
+          firstName: response.data.given_name,
+          lastName: response.data.family_name,
+          name: response.data.name,
+          email: response.data.email,
+          profilePicture: response.data.picture,
+        });
       });
   }, []);
 

@@ -4,9 +4,10 @@ import { SERVICE_URI } from "../../config";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { IPost } from "../../types/post";
-import "../../css/Home.css";
+import "./Home.css";
 import PostView from "../../components/PostView";
 import NavigationBar from "../../components/Navigation";
+import { dateTimePretty } from "../../utils/datetime";
 
 interface IPostCard {
   title: IPost["title"];
@@ -28,21 +29,6 @@ const PostCard = ({ title, extra_metadata, url, onClick }: IPostCard) => {
   );
 };
 
-const monthToString = {
-  "01": "January",
-  "02": "February",
-  "03": "March",
-  "04": "April",
-  "05": "May",
-  "06": "June",
-  "07": "July",
-  "08": "August",
-  "09": "September",
-  "10": "October",
-  "11": "November",
-  "12": "December",
-};
-
 const Home = () => {
   const [postData, setPostsData] = useState<IPost[]>([]);
   const navigate = useNavigate();
@@ -58,13 +44,20 @@ const Home = () => {
   useEffect(() => {
     if (!loading) {
       !user && navigate("/login");
-      axios.get(`${SERVICE_URI}/all`).then((response) => {
-        setPostsData(response.data);
-      });
+      axios
+        .post(`${SERVICE_URI}/all`, {
+          sort: {
+            field: "timestamp",
+            direction: "desc",
+          },
+        })
+        .then((response) => {
+          setPostsData(response.data);
+        });
     }
   }, [user, loading, navigate]);
 
-  const handleClick = async (postId: string) => {
+  const viewPost = async (postId: string) => {
     try {
       const response = await axios.get(`${SERVICE_URI}/get/${postId}`);
       setItemData(response.data);
@@ -73,6 +66,10 @@ const Home = () => {
       setItemData(null);
     }
   };
+
+  const viewPostRedirect = (postId: string) => {
+    navigate(`/view/${postId}`);
+  }
 
   return (
     <>
@@ -91,8 +88,11 @@ const Home = () => {
                 i === 0 ||
                 postDate !== postData[i - 1].timestamp.split("T")[0]
               ) {
-                const dateParts = postDate.split("-");
-                dateHeading = <h1 className="post-link-date-heading">{dateParts[2]} {monthToString[dateParts[1]]} {dateParts[1]}</h1>;
+                dateHeading = (
+                  <p className="post-link-date-heading">
+                    {dateTimePretty(data.timestamp)}
+                  </p>
+                );
               }
 
               return (
@@ -102,18 +102,16 @@ const Home = () => {
                     title={data.title}
                     extra_metadata={data.extra_metadata}
                     url={data.url}
-                    onClick={() => handleClick(data.id)}
+                    onClick={() => viewPost(data.id)}
                   />
                 </React.Fragment>
               );
             })}
           </div>
         </div>
-        <div className="home-container-inner right">
-          {itemData ? (
+        <div className="post-viewer-container" style={{display: "block"}}>
+          {itemData && (
             <PostView postId={itemData.id} onPostDelete={removePost} />
-          ) : (
-            <div>Select something plis</div>
           )}
         </div>
       </div>

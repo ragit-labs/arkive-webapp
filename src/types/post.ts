@@ -15,4 +15,5 @@ export type IPost = {
   timestamp: string;
   extra_metadata?: IPostMetadata;
   tags: Tag[];
+  user_id: string;
 };

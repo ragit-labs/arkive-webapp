@@ -1,8 +1,14 @@
 .home-container {
-  display: flex;
   height: 100vh;
   width: 100vw;
   position: fixed;
+}
+
+.post-viewer-container {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
 }
 
 .home-container-inner {
@@ -15,6 +21,7 @@
 
 .home-container-inner.right {
   flex: 40%;
+  background-color: rgb(26, 26, 26, 1);
 }
 
 .home-search-container {
@@ -29,7 +36,7 @@
 
 .post-link-date-heading {
   font-size: 2.8rem;
-  font-weight:500;
+  font-weight: 500;
   margin-top: 5rem;
 }
 

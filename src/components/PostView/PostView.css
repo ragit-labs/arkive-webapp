@@ -1,26 +1,48 @@
+body {
+  background-color: #dfdfdf !important;
+}
 .view-container {
   position: relative;
-  background-color: rgb(26, 26, 26, 1);
+  background-color: rgb(255, 255, 255, 1);
   top: 0%;
+  display: flex;
+  border-radius: 10px;
+}
+
+.view-container-body {
+  flex: 75%;
+}
+
+.view-container-side {
+  flex: 25%;
+  border-left: 1px solid rgb(220, 220, 220);
 }
 
 .view-container-header {
-  padding: 3em;
-  background: url("../../assets/images/post-bg.png");
+  margin-top: 3.5rem;
+  padding: 0em 0em 2.75em 0em;
+  margin-left: 3rem;
+  width: 85%;
+  line-height: 1.28;
 }
 
-.view-container h1 {
-  color: white;
+.post-title {
+  color: black;
   font-weight: bold;
+  font-size: 30px;
 }
 
 .view-container h3 {
-  color: rgb(195, 195, 195);
+  color: rgb(64, 64, 64);
   font-weight: normal;
 }
 
 .view-container-content {
-  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  padding: 0rem 0rem 3rem 0rem;
+  margin-left: 3rem;
+  color: rgba(0, 0, 0, 0.7);
+  width: 85%;
 }
 
 .tags-container {
@@ -34,26 +56,70 @@
   margin: 10px;
   padding: 0.3rem 0.5rem;
   display: inline-block;
-  color: white;
+  color: black;
   font-weight: normal;
-  border: 1px solid white;
+  border: 1px solid rgb(64, 64, 64);
 }
 
 .cta-container {
-  margin-top: 25px;
-  display: flex;
+  margin-top: 4.7rem;
+  border-bottom: 1px solid rgb(220, 220, 220);
+  padding: 0rem 1rem 1.4rem 1rem;
 }
 
-.cta-button {
+.cta-url-container {
+  margin-bottom: 1rem;
   cursor: pointer;
-  margin: 10px;
-  padding: 10px;
 }
 
-.cta-button:hover {
-  background-color: red;
+.action-button-primary {
+  font-size: 0.9rem;
+  margin: 0.2rem 1rem 0.2rem 0rem;
+  padding: 0.3rem 1.4rem;
+  display: inline-block;
+  color: rgb(64, 64, 64);
+  background-color: rgb(209, 209, 209);
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.action-button-primary:hover {
+  background-color: rgb(64, 64, 64);
+  color: white;
+}
+
+.action-button-secondary {
+  font-size: 0.8rem;
+  display: inline-block;
+  color: rgb(64, 64, 64);
+  font-weight: 400;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 .cta-solid {
   background-color: #2e2c35;
+}
+
+.tags-side {
+  font-size: 0.7rem;
+  margin: 0.2rem 0.25rem 0.2rem 0rem;
+  padding: 0.3rem 0.5rem;
+  display: inline-block;
+  color: rgb(64, 64, 64);
+  background-color: rgb(209, 209, 209);
+  font-weight: 500;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.tags-side:hover {
+  background-color: rgb(64, 64, 64);
+  color: white;
+}
+
+.post-save-date {
+  font-size: 0.9rem;
+  color: rgb(64, 64, 64);
 }

@@ -11,7 +11,7 @@ const View = () => {
         left: "50%",
         transform: "translateX(-50%)",
         top: "100px",
-        width: "40%",
+        width: "80%",
         marginBottom: "100px",
       }}
     >
