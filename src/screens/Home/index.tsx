@@ -18,19 +18,6 @@ interface ICard {
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-const Card = ({ title, extra_metadata, url, onClick }: ICard) => {
-  const rawUri = new URL(url);
-  return (
-    <div className="post-link-items" onClick={onClick}>
-      <p>{title}</p>
-      <p>
-        {extra_metadata?.author && <span>extra_metadata?.author |</span>}{" "}
-        {rawUri.hostname}
-      </p>
-    </div>
-  );
-};
-
 const Home = () => {
   const [postData, setPostsData] = useState<IPost[]>([]);
   const navigate = useNavigate();
@@ -80,7 +67,7 @@ const Home = () => {
         className="home-container"
         style={{ overflow: itemData ? "hidden" : "auto" }}
       >
-        <div className="recently-saved-contaier" style={{display: "flex"}}>
+        <div className="recently-saved-contaier" style={{ display: "flex" }}>
           <p className="recently-saved-heading">Recently Saved</p>
           {postData.slice(0, 4).map((data, i) => {
             return (
@@ -88,14 +75,21 @@ const Home = () => {
                 key={i}
                 title={data.title}
                 url={data.url}
-                banner={"https://plus.unsplash.com/premium_photo-1710631508215-61d51dcacfb6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                banner={
+                  "https://plus.unsplash.com/premium_photo-1710631508215-61d51dcacfb6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                }
                 id={data.id}
-                tags={data.tags.slice(0, 3).map((tag) => `#${tag.name.toLocaleLowerCase().replace(" ", "-")}`)}
+                tags={data.tags
+                  .slice(0, 3)
+                  .map(
+                    (tag) =>
+                      `#${tag.name.toLocaleLowerCase().replace(" ", "-")}`,
+                  )}
                 cardStyle={{
                   width: "17.5rem",
                   height: "14.25rem",
-                  marginRight: "3.5rem",
                 }}
+                onClick={() => viewPost(data.id)}
               />
             );
           })}
@@ -123,8 +117,13 @@ const Home = () => {
                   <PostLinkCard
                     title={data.title}
                     url={data.url}
-                    tags={data.tags.slice(0, 3).map((tag) => `#${tag.name.toLowerCase().replace(" ", "-")}`)}
+                    tags={data.tags
+                      .slice(0, 3)
+                      .map(
+                        (tag) => `#${tag.name.toLowerCase().replace(" ", "-")}`,
+                      )}
                     id={data.id}
+                    onClick={() => viewPost(data.id)}
                   />
                 </React.Fragment>
               );

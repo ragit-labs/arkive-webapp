@@ -1,6 +1,8 @@
 .home-container {
   width: 80vw;
-  left: 10vw;
+  max-width: 1400px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .recently-saved-contaier {

@@ -12,6 +12,7 @@ interface PostLinkCardProps {
   titleClass?: string;
   tagsStyle?: React.CSSProperties;
   tagsClass?: string;
+  onClick: (post_id: string) => void;
 }
 
 const PostLinkCard: React.FC<PostLinkCardProps> = ({
@@ -25,6 +26,7 @@ const PostLinkCard: React.FC<PostLinkCardProps> = ({
   titleClass,
   tagsStyle,
   tagsClass,
+  onClick,
 }) => {
   return (
     <div
@@ -36,14 +38,21 @@ const PostLinkCard: React.FC<PostLinkCardProps> = ({
         padding: "0rem 0rem 1rem 0.75rem",
         ...cardStyle,
       }}
+      onClick={() => onClick(id)}
     >
       <div style={{ width: "80%" }}>
-        <p className={`post-link-card-title ${titleClass ?? ""}`} style={{ ...titleStyle }}>
+        <p
+          className={`post-link-card-title ${titleClass ?? ""}`}
+          style={{ ...titleStyle }}
+        >
           {title}
         </p>
         {tags.map((tag) => {
           return (
-            <span className={`post-link-card-tags ${tagsClass ?? ""}`} style={{ ...tagsStyle }}>
+            <span
+              className={`post-link-card-tags ${tagsClass ?? ""}`}
+              style={{ ...tagsStyle }}
+            >
               {tag}
             </span>
           );

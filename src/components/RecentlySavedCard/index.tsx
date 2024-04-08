@@ -14,6 +14,7 @@ interface RecentlySavedCardProps {
   titleClass?: string;
   tagsStyle?: React.CSSProperties;
   tagsClass?: string;
+  onClick: (post_id: string) => void;
 }
 
 const RecentlySavedCard: React.FC<RecentlySavedCardProps> = ({
@@ -29,10 +30,11 @@ const RecentlySavedCard: React.FC<RecentlySavedCardProps> = ({
   titleClass,
   tagsStyle,
   tagsClass,
+  onClick,
 }) => {
   return (
     <div
-      className={cardClass}
+      className={`recently-saved-card ${cardClass ?? ""}`}
       style={{
         position: "relative",
         display: "inline-block",
@@ -40,6 +42,7 @@ const RecentlySavedCard: React.FC<RecentlySavedCardProps> = ({
         height: "100%",
         ...cardStyle,
       }}
+      onClick={() => onClick(id)}
     >
       <div
         className={bannerClass}
