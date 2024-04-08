@@ -11,7 +11,7 @@ export type IPost = {
   title: string;
   content: string;
   url: string;
-  banner: string;
+  banner?: string;
   timestamp: string;
   extra_metadata?: IPostMetadata;
   tags: Tag[];

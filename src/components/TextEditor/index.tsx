@@ -27,10 +27,12 @@ export const TextEditor = ({
   );
 
   useEffect(() => {
-    setEditorState(EditorState.createWithContent(
-      convertFromRaw(markdownToDraft(stringComponent ?? "")),
-    ))
-  }, [discard])
+    setEditorState(
+      EditorState.createWithContent(
+        convertFromRaw(markdownToDraft(stringComponent ?? "")),
+      ),
+    );
+  }, [discard]);
 
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const [showLinkInput, setShowLinkInput] = useState(false);
@@ -164,7 +166,16 @@ export const TextEditor = ({
         editorState={editorState}
         onChange={(editorState) => setEditorState(editorState)}
         readOnly={readOnly ?? false}
-        onBlur={updateCallback ? () => updateCallback(draftToMarkdown(convertToRaw(editorState.getCurrentContent()))) : undefined}
+        onBlur={
+          updateCallback
+            ? () =>
+                updateCallback(
+                  draftToMarkdown(
+                    convertToRaw(editorState.getCurrentContent()),
+                  ),
+                )
+            : undefined
+        }
       />
     </div>
   );

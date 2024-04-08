@@ -17,13 +17,13 @@ const PostView: React.FC<{
   const [postContent, setPostContent] = useState<string | null>(null);
   const [postTitle, setPostTitle] = useState<string | null>(null);
   const [editedContent, setEditedContent] = useState<string | null>(null);
-  
+
   const [readOnly, setreadOnly] = useState<boolean>(true);
-  
+
   const [discard, setDiscard] = useState<boolean>(true);
-  
+
   const { user } = useAuth();
-  
+
   useEffect(() => {
     axios.get(`${SERVICE_URI}/get/${postId}`).then((response) => {
       setPostData(response.data);
@@ -40,7 +40,7 @@ const PostView: React.FC<{
 
   useEffect(() => {
     setEditedContent(postContent);
-  }, [postContent])
+  }, [postContent]);
 
   const deletePost = () => {
     if (onPostDelete)
@@ -66,8 +66,9 @@ const PostView: React.FC<{
 
   const saveUpdatedPost = () => {
     setreadOnly(true);
-    const newPostTitle = document.getElementsByClassName("post-title")[0].textContent;
-    if(editedContent === postContent && postTitle === newPostTitle) return;
+    const newPostTitle =
+      document.getElementsByClassName("post-title")[0].textContent;
+    if (editedContent === postContent && postTitle === newPostTitle) return;
     const updatedPost = {
       post_id: postId,
       title: newPostTitle,
@@ -78,11 +79,11 @@ const PostView: React.FC<{
         setreadOnly(true);
       }
     });
-  }
+  };
 
   const getUpdatedPost = (content: string) => {
     setEditedContent(content);
-  }
+  };
 
   const copyToClipboard = () => {
     const postUri = `${WEBAPP_URI}/view/${postId}`;
@@ -97,7 +98,15 @@ const PostView: React.FC<{
         <div className="view-container">
           <div className="view-container-body">
             <div className="view-container-header">
-              {postTitle && <div className="post-title" contentEditable={!readOnly} style={{border: !readOnly ? "1px dashed black" : "none"}}>{postData.title}</div>}
+              {postTitle && (
+                <div
+                  className="post-title"
+                  contentEditable={!readOnly}
+                  style={{ border: !readOnly ? "1px dashed black" : "none" }}
+                >
+                  {postData.title}
+                </div>
+              )}
               {postData.user_id !== user?.id && (
                 <>
                   <h3 style={{ textAlign: "center", fontSize: "0.9rem" }}>
@@ -124,7 +133,15 @@ const PostView: React.FC<{
                     readOnly={readOnly}
                     discard={discard}
                     updateCallback={getUpdatedPost}
-                    stringComponent={postData.content}
+                    stringComponent={postData.content.concat(
+                      postData.content.concat(
+                        postData.content.concat(
+                          postData.content.concat(
+                            postData.content.concat(postData.content),
+                          ),
+                        ),
+                      ),
+                    )}
                   />
                 )}
               </div>
