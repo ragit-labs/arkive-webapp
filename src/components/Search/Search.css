@@ -1,0 +1,19 @@
+.search-item {
+  background-color: #ffffff;
+}
+.search-item:hover {
+  background-color: #e6e7e7;
+}
+
+.search-input {
+    border: 1px solid #9CADBD;
+}
+
+.search-input:focus {
+    outline-color: #9CADBD;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.search-input::placeholder {
+    color: #9CADBD;
+}

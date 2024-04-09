@@ -1,50 +1,70 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { SERVICE_URI } from "../../config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { IPost } from "../../types/post";
 import "./Home.css";
 import PostView from "../../components/PostView";
-import NavigationBar from "../../components/Navigation";
 import { dateTimePretty } from "../../utils/datetime";
 import RecentlySavedCard from "../../components/RecentlySavedCard";
 import PostLinkCard from "../../components/PostLinkCard";
+import TagsSearch from "../../components/TagsSearch";
+import Search from "../../components/Search";
 
-interface ICard {
-  title: IPost["title"];
-  extra_metadata: IPost["extra_metadata"];
-  url: IPost["url"];
-  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
-}
+const fetchPosts = async (skip?: number, limit?: number, tags?: string[]) => {
+  const response = await axios.post(`${SERVICE_URI}/all`, {
+    sort: {
+      field: "timestamp",
+      direction: "desc",
+    },
+    skip,
+    limit,
+    tags,
+  });
+  return response.data;
+};
 
 const Home = () => {
+  const [recentlySavedData, setRecentlySavedData] = useState<IPost[]>([]);
   const [postData, setPostsData] = useState<IPost[]>([]);
-  const navigate = useNavigate();
-  const { user, loading } = useAuth();
-
   const [itemData, setItemData] = useState<IPost | null>(null);
+  const [tags, setTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Set<string>>(
+    new Set<string>(),
+  );
+  const [searchItems, setSearchItems] = useState<IPost[]>([]);
 
-  const removePost = (postId: string) => {
-    setPostsData(postData.filter((post) => post.id !== postId));
-    setItemData(null);
-  };
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { user, loading: userLoading } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading) {
+    if (!userLoading) {
       !user && navigate("/login");
-      axios
-        .post(`${SERVICE_URI}/all`, {
-          sort: {
-            field: "timestamp",
-            direction: "desc",
-          },
-        })
-        .then((response) => {
-          setPostsData(response.data);
-        });
+
+      let tags = new Set<string>();
+
+      if (searchParams.get("tags")) {
+        tags = new Set(searchParams.get("tags")?.split(",") ?? []);
+      }
+
+      fetchPosts(0, 4).then((data) => {
+        setRecentlySavedData(data);
+      });
+
+      fetchPosts(0, tags.size === 0 ? 4 : 0, Array.from(tags)).then((data) => {
+        setPostsData(data);
+        console.log(tags);
+        setSelectedTags(new Set(tags));
+      });
+
+      axios.post(`${SERVICE_URI}/all_tags`).then((response) => {
+        setTags(response.data.map((tag: { id: string }) => tag.id));
+      });
     }
-  }, [user, loading, navigate]);
+  }, [user, userLoading, navigate, searchParams]);
 
   const viewPost = async (postId: string) => {
     try {
@@ -60,16 +80,76 @@ const Home = () => {
     setItemData(null);
   };
 
+  const removePost = (postId: string) => {
+    setPostsData(postData.filter((post) => post.id !== postId));
+    setItemData(null);
+  };
+
+  const toggleTag = (tag: string) => {
+    if (selectedTags.has(tag)) {
+      selectedTags.delete(tag);
+    } else {
+      selectedTags.add(tag);
+    }
+    if (selectedTags.size === 0) {
+      setSearchParams({});
+    } else {
+      setSearchParams({
+        tags: Array.from(selectedTags).join(","),
+      });
+    }
+  };
+
+  const searchPosts = async (searchValue: string) => {
+    if (searchValue.length < 4) {
+      setSearchItems([]);
+    } else {
+      axios
+        .post(`${SERVICE_URI}/search`, {
+          keyword: searchValue,
+        })
+        .then((response) => {
+          setSearchItems(response.data);
+        });
+    }
+  };
+
   return (
     <>
-      <NavigationBar />
+      <div
+        className="header-container"
+        style={{
+          position: "fixed",
+          top: "3rem",
+          width: "86%",
+          left: "8%",
+          height: "3rem",
+          zIndex: 999,
+        }}
+      >
+        <div
+          className="search-container"
+          style={{
+            position: "relative",
+          }}
+        >
+          <Search
+            searchItems={searchItems}
+            onChange={searchPosts}
+            onItemClick={viewPost}
+          />
+        </div>
+      </div>
       <div
         className="home-container"
-        style={{ overflow: itemData ? "hidden" : "auto" }}
+        style={{ 
+          // overflowY: itemData ? "hidden" : "auto" 
+          position: "relative",
+        }}
       >
         <div className="recently-saved-contaier" style={{ display: "flex" }}>
           <p className="recently-saved-heading">Recently Saved</p>
-          {postData.slice(0, 4).map((data, i) => {
+          {recentlySavedData.map((data, i) => {
             return (
               <RecentlySavedCard
                 key={i}
@@ -82,8 +162,7 @@ const Home = () => {
                 tags={data.tags
                   .slice(0, 3)
                   .map(
-                    (tag) =>
-                      `#${tag.name.toLocaleLowerCase().replace(" ", "-")}`,
+                    (tag) => `#${tag.id.toLocaleLowerCase().replace(" ", "-")}`,
                   )}
                 cardStyle={{
                   width: "17.5rem",
@@ -94,15 +173,22 @@ const Home = () => {
             );
           })}
         </div>
-        <div className="home-container-inner left">
+        <div className="tags-search-container" style={{}}>
+        <TagsSearch
+          tags={tags}
+          selectedTags={selectedTags}
+          toggleTag={toggleTag}
+        />
+        </div>
+        <div className="home-container-inner">
           <div className="home-post-link-container">
-            {postData.slice(4).map((data, i) => {
+            {postData.map((data, i) => {
               const postDate = data.timestamp.split("T")[0];
 
               let dateHeading = null;
               if (
-                i === 0 ||
-                postDate !== postData[i - 1].timestamp.split("T")[0]
+                selectedTags.size == 0 && (i === 0 ||
+                postDate !== postData[i - 1].timestamp.split("T")[0])
               ) {
                 dateHeading = (
                   <p className="post-link-date-heading">
@@ -120,7 +206,7 @@ const Home = () => {
                     tags={data.tags
                       .slice(0, 3)
                       .map(
-                        (tag) => `#${tag.name.toLowerCase().replace(" ", "-")}`,
+                        (tag) => `#${tag.id.toLowerCase().replace(" ", "-")}`,
                       )}
                     id={data.id}
                     onClick={() => viewPost(data.id)}
@@ -130,11 +216,13 @@ const Home = () => {
             })}
           </div>
         </div>
-        <div
-          className="post-viewer-container"
-          style={{ display: itemData ? "block" : "none" }}
-        >
-          <div className="post-viewer-bg" onClick={closePost}></div>
+      </div>
+      <div
+        className="post-viewer-container"
+        style={{ display: itemData ? "block" : "none" }}
+      >
+        <div className="post-viewer-bg" onClick={closePost}></div>
+        <div className="post-viewer-container-inner">
           <div className="post-viewer">
             {itemData && (
               <PostView postId={itemData.id} onPostDelete={removePost} />

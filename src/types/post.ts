@@ -3,7 +3,7 @@ export type IPostMetadata = {
 };
 
 export type Tag = {
-  name: string;
+  id: string;
 };
 
 export type IPost = {

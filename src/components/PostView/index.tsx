@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 import { dateTimePretty } from "../../utils/datetime";
 import uriIcon from "../../assets/images/uri-icon.svg";
 import { TextEditor } from "../TextEditor";
+import { useNavigate } from "react-router-dom";
 
 const PostView: React.FC<{
   postId: string;
@@ -23,6 +24,8 @@ const PostView: React.FC<{
   const [discard, setDiscard] = useState<boolean>(true);
 
   const { user } = useAuth();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`${SERVICE_URI}/get/${postId}`).then((response) => {
@@ -52,6 +55,11 @@ const PostView: React.FC<{
             onPostDelete(postId);
           }
         });
+  };
+
+  const searchTag = (tag: string) => {
+    navigate(`/?tags=${tag}`);
+    setPostData(null);
   };
 
   const editPost = () => {
@@ -116,7 +124,7 @@ const PostView: React.FC<{
                   <div className="tags-container">
                     {postData.tags.map((tag, index) => (
                       <span key={index} className="tags">
-                        {tag.name}
+                        #{tag.id}
                       </span>
                     ))}
                   </div>
@@ -159,8 +167,12 @@ const PostView: React.FC<{
                 </div>
                 <div className="tags-container-side">
                   {postData.tags.map((tag, index) => (
-                    <span key={index} className="tags-side">
-                      {tag.name}
+                    <span
+                      key={index}
+                      onClick={() => searchTag(tag.id)}
+                      className="tags-side"
+                    >
+                      #{tag.id}
                     </span>
                   ))}
                   <span className="tags-side">+</span>

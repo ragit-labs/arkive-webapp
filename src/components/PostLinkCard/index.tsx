@@ -36,6 +36,7 @@ const PostLinkCard: React.FC<PostLinkCardProps> = ({
         width: "100%",
         borderBottom: "1px solid #e0e0e0",
         padding: "0rem 0rem 1rem 0.75rem",
+        cursor: "pointer",
         ...cardStyle,
       }}
       onClick={() => onClick(id)}
