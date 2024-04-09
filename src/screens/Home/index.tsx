@@ -11,6 +11,7 @@ import RecentlySavedCard from "../../components/RecentlySavedCard";
 import PostLinkCard from "../../components/PostLinkCard";
 import TagsSearch from "../../components/TagsSearch";
 import Search from "../../components/Search";
+import "../../index.css";
 
 const fetchPosts = async (skip?: number, limit?: number, tags?: string[]) => {
   const response = await axios.post(`${SERVICE_URI}/all`, {
@@ -117,10 +118,8 @@ const Home = () => {
   return (
     <>
       <div
-        className="header-container"
+        className="header-container fixed w-full"
         style={{
-          position: "fixed",
-          top: "3rem",
           width: "86%",
           left: "8%",
           height: "3rem",
