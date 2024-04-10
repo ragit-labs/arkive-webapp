@@ -8,6 +8,14 @@ import {
 } from "draft-js";
 import React, { useEffect, useState } from "react";
 import { markdownToDraft, draftToMarkdown } from "markdown-draft-js";
+import "./TextEditor.css";
+import toolTipBg from "../../assets/images/icons/tooltip-bg.svg";
+import boldIcon from "../../assets/images/icons/bold.svg";
+import italicIcon from "../../assets/images/icons/italic.svg";
+import underlineIcon from "../../assets/images/icons/underline.svg";
+import codeIcon from "../../assets/images/icons/code.svg";
+import unorderedListIcon from "../../assets/images/icons/unordered-list.svg";
+import orderedListIcon from "../../assets/images/icons/ordered-list.svg";
 
 export const TextEditor = ({
   stringComponent,
@@ -102,7 +110,7 @@ export const TextEditor = ({
       if (selection && selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
-        setTooltipPosition({ top: rect.top, left: rect.left });
+        setTooltipPosition({ top: rect.top - 64, left: rect.left - 64 });
       }
     }
   }, [editorState]);
@@ -128,14 +136,11 @@ export const TextEditor = ({
       <div
         className="editor-tooltip"
         style={{
-          position: "fixed",
           display: !editorState.getSelection().isCollapsed() ? "flex" : "none",
           top: `${tooltipPosition.top}px`,
           left: `${tooltipPosition.left}px`,
-          border: "1px solid black",
-          padding: "10px",
-          backgroundColor: "white",
           zIndex: 1000,
+          backgroundImage: `url(${toolTipBg})`,
         }}
       >
         {showLinkInput ? (
@@ -151,14 +156,14 @@ export const TextEditor = ({
           </>
         ) : (
           <>
-            <p onClick={() => toggleInlineStyle("BOLD")}>Bold</p>
-            <p onClick={() => toggleInlineStyle("ITALIC")}>Italic</p>
-            <p onClick={() => toggleInlineStyle("UNDERLINE")}>Underline</p>
-            <p onClick={() => toggleInlineStyle("CODE")}>Code</p>
-            <p onClick={() => toggleBlockType("code-block")}>Block Code</p>
-            <p onClick={() => toggleBlockType("unordered-list-item")}>Bullet</p>
-            <p onClick={() => toggleBlockType("ordered-list-item")}>Numbered</p>
-            <p onClick={toggleLinkInput}>Link</p>
+            <div style={{backgroundImage: `url(${boldIcon})`}} className="tooltip-item" onClick={() => toggleInlineStyle("BOLD")}></div>
+            <div style={{backgroundImage: `url(${italicIcon})`}} className="tooltip-item" onClick={() => toggleInlineStyle("ITALIC")}></div>
+            <div style={{backgroundImage: `url(${underlineIcon})`}} className="tooltip-item" onClick={() => toggleInlineStyle("UNDERLINE")}></div>
+            <div style={{backgroundImage: `url(${codeIcon})`}} className="tooltip-item" onClick={() => toggleInlineStyle("CODE")}></div>
+            {/* <div style={{backgroundImage: `url(${boldIcon})`}} className="tooltip-item" onClick={() => toggleBlockType("code-block")}></div> */}
+            <div style={{backgroundImage: `url(${unorderedListIcon})`}} className="tooltip-item" onClick={() => toggleBlockType("unordered-list-item")}></div>
+            <div style={{backgroundImage: `url(${orderedListIcon})`}} className="tooltip-item" onClick={() => toggleBlockType("ordered-list-item")}></div>
+            <div style={{backgroundImage: `url(${boldIcon})`, display: "none"}} className="tooltip-item" onClick={toggleLinkInput}></div>
           </>
         )}
       </div>

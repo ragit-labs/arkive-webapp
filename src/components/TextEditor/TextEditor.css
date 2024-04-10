@@ -1,0 +1,35 @@
+.text-editor::selection {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.editor-tooltip {
+  position: fixed;
+  background-size: 100% 100%;
+  justify-content: space-between;
+  background-repeat: no-repeat;
+  /* width: 13rem;
+  height: 3.6rem; */
+  padding: 1rem 1rem 1.5rem 1rem;
+}
+
+.tooltip-item {
+  /* display: inline-block; */
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  padding: 0.4rem;
+  background-size: 60% 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor:pointer;
+  border-radius: 3px;
+}
+
+.tooltip-item:hover {
+  background-color: rgba(255,255, 255, 0.3);
+}
+
+a {
+  color: red;
+}
