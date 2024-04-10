@@ -37,7 +37,8 @@ const RecentlySavedCard: React.FC<RecentlySavedCardProps> = ({
       className={`recently-saved-card ${cardClass ?? ""}`}
       style={{
         position: "relative",
-        display: "inline-block",
+        // display: "inline-block",
+        flex: "1",
         width: "100%",
         height: "100%",
         ...cardStyle,
@@ -51,6 +52,7 @@ const RecentlySavedCard: React.FC<RecentlySavedCardProps> = ({
           width: "100%",
           backgroundImage: "url(" + banner + ")",
           backgroundSize: "100% auto",
+          borderRadius: "3px",
           ...bannerStyle,
         }}
       ></div>

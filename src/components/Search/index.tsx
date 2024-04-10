@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IPost } from "../../types/post";
 import articleUriIcon from "../../assets/images/article-icon.svg";
+import searchIcon from "../../assets/images/search.svg";
 import "./Search.css";
 
 interface SearchProps {
@@ -15,6 +16,7 @@ const Search: React.FC<SearchProps> = ({
   onItemClick,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const isDesktop = window.innerWidth > 1200;
 
   useEffect(() => {
     onChange(searchTerm);
@@ -44,19 +46,25 @@ const Search: React.FC<SearchProps> = ({
             e.target.value = "";
             setSearchTerm(e.target.value);
           }}
-          onBlur={(e) => {
-            setTimeout(() => {
-              e.target.value = "";
-              setSearchTerm("");
-            }, 100);
-          }}
+          // onBlur={(e) => {
+          //   setTimeout(() => {
+          //     e.target.value = "";
+          //     setSearchTerm("");
+          //   }, 100);
+          // }}
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{
-            padding: "0.8rem",
+            padding: "0.9rem",
+            paddingLeft: "2.5rem",
             marginLeft: "auto",
-            marginRight: "0rem",
-            width: "20rem",
-            borderRadius: searchItems.length > 0 ? "5px 5px 0px 0px" : "5px 5px 5px 5px"
+            marginRight: "1rem",
+            width: "25rem",
+            border: "1px solid #D9D9D9",
+            borderRadius: searchItems.length > 0 ? "3px 3px 0px 0px" : "3px",
+            fontSize: "0.8rem",
+            backgroundImage: `url(${searchIcon})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "1rem center",
           }}
           className="search-input"
         />
@@ -71,11 +79,12 @@ const Search: React.FC<SearchProps> = ({
           <div
             className="search-items-container-inner"
             style={{
-              width: "45%",
+              width: "50%",
               marginLeft: "auto",
               marginRight: "0rem",
               padding: "0rem",
               border: "1px solid black",
+              borderRadius: "3px",
             }}
           >
             {searchItems.map((item, index) => {
@@ -95,9 +104,9 @@ const Search: React.FC<SearchProps> = ({
                       cursor: "pointer",
                       borderBottom:
                         index < searchItems.length - 1
-                          ? "1px solid black"
+                          ? "1px solid #D9D9D9"
                           : "none",
-                      padding: "0.75rem 0rem 0.75rem 0rem",
+                      padding: "1rem 0rem 1rem 0rem",
                     }}
                   >
                     <img
@@ -117,13 +126,15 @@ const Search: React.FC<SearchProps> = ({
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                         fontSize: "0.875rem",
-                        marginLeft: "3rem",
+                        marginLeft: "3.5rem",
                       }}
                     >
                       <p
                         style={{
                           fontSize: "0.875rem",
-                          top: "0.25rem",
+                          top: "0.1rem",
+                          fontWeight: "400",
+                          lineHeight: "1.8",
                         }}
                       >
                         {item.title}
@@ -133,8 +144,9 @@ const Search: React.FC<SearchProps> = ({
                           <span
                             key={tag.id}
                             style={{
-                              fontSize: "0.75rem",
-                              top: "-0.25rem",
+                              fontSize: "0.7rem",
+                              top: "0rem",
+                              color: "#656565",
                             }}
                           >
                             {`#${tag.id.toLocaleLowerCase().replace(" ", "-")}`}{" "}

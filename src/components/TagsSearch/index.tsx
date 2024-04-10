@@ -12,20 +12,11 @@ const TagsSearch: React.FC<TagsSearchProps> = ({
   tags,
   selectedTags,
   toggleTag,
-  style,
 }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div
-      style={{
-        position: "relative",
-        height: "0",
-        width: "0",
-        ...style,
-      }}
-    >
+    <div>
       {/* <div
         style={{
           display: "flex",
@@ -42,65 +33,56 @@ const TagsSearch: React.FC<TagsSearchProps> = ({
           </div>
         ))}
       </div> */}
+      <p
+        style={{
+          fontSize: "0.9rem",
+          color: "#000",
+          marginBottom: "1rem",
+          fontWeight: "bold",
+        }}
+      >
+        Filter By Tags
+      </p>
       <input
-        type="text"
-        placeholder="Filter By Tags"
+        placeholder="Search Tags"
+        style={{
+          position: "relative",
+          marginBottom: "1rem",
+        }}
         onFocus={(e) => {
           e.target.value = "";
           setSearchTerm(e.target.value);
-          setIsDropdownOpen(true);
         }}
         // onBlur={() => {
         //   setTimeout(() => setIsDropdownOpen(false), 100);
         // }}
         onChange={(e) => setSearchTerm(e.target.value)}
-        style={{
-          position: "absolute",
-        }}
       />
-      {isDropdownOpen && (
-        <div
-          style={{
-            display: isDropdownOpen ? "flex" : "none",
-            flexDirection: "column" ,
-            position: "relative",
-            marginLeft: "auto",
-            marginRight: "0rem",
-            top: "2rem",
-            right: "0rem",
-            flexWrap: "wrap",
-            width: "20rem",
-            backgroundColor: "#f5f5f5",
-            border: "1px solid #e0e0e0",
-            zIndex: 10000,
-          }}
-        >
-          {tags
-            .sort((a, b) => a.localeCompare(b))
-            .filter((tag) =>
-              tag.toLowerCase().includes(searchTerm.toLowerCase()),
-            )
-            .slice(0, 8)
-            .map((tag, index) => {
-              return (
-                <div
-                  style={{
-                    padding: "0.5rem",
-                    cursor: "pointer",
-                    color: selectedTags.has(tag) ? "green" : "#fff",
-                    borderRadius: "0.5rem",
-                    margin: "0.25rem",
-                    fontSize: "0.75rem",
-                  }}
-                  key={index}
-                  onClick={() => toggleTag(tag)}
-                >
-                  {tagToString(tag)}
-                </div>
-              );
-            })}
-        </div>
-      )}
+      <div>
+        {tags
+          .sort((a, b) => a.localeCompare(b))
+          .filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+          .slice(0, 8)
+          .map((tag, index) => {
+            return (
+              <span
+                style={{
+                  display: "block",
+                  cursor: "pointer",
+                  color: selectedTags.has(tag) ? "#000000" : "#6B6D71",
+                  borderRadius: "0.5rem",
+                  marginBottom: "0.5rem",
+                  fontSize: "0.8rem",
+                  fontWeight: selectedTags.has(tag) ? "bold" : "normal",
+                }}
+                key={index}
+                onClick={() => toggleTag(tag)}
+              >
+                {tagToString(tag)}
+              </span>
+            );
+          })}
+      </div>
     </div>
   );
 };

@@ -6,14 +6,15 @@
 }
 
 .search-input {
-    border: 1px solid #9CADBD;
+  border: 1px solid #9cadbd;
 }
 
 .search-input:focus {
-    outline-color: #9CADBD;
-    border-radius: 5px 5px 0px 0px;
+  outline: 2px;
+  outline-color: black;
+  border-radius: 5px 5px 0px 0px;
 }
 
 .search-input::placeholder {
-    color: #9CADBD;
+  color: #9cadbd;
 }
