@@ -13,7 +13,17 @@ import TagsSearch from "../../components/TagsSearch";
 import Search from "../../components/Search";
 import "../../index.css";
 
-const fetchPosts = async (skip?: number, limit?: number, tags?: string[]) => {
+const fetchPosts = async ({
+  skip,
+  limit,
+  tags,
+  fields,
+}: {
+  skip?: number;
+  limit?: number;
+  tags?: string[];
+  fields: string[];
+}) => {
   const response = await axios.post(`${SERVICE_URI}/all`, {
     sort: {
       field: "timestamp",
@@ -22,11 +32,13 @@ const fetchPosts = async (skip?: number, limit?: number, tags?: string[]) => {
     skip,
     limit,
     tags,
+    fields,
   });
   return response.data;
 };
 
 const Home = () => {
+  const fieldsToFetch = ["id", "title", "url", "tags"];
   const [recentlySavedData, setRecentlySavedData] = useState<IPost[]>([]);
   const [postData, setPostsData] = useState<IPost[]>([]);
   const [itemData, setItemData] = useState<IPost | null>(null);
@@ -51,17 +63,23 @@ const Home = () => {
         tags = new Set(searchParams.get("tags")?.split(",") ?? []);
       }
 
-      fetchPosts(0, 4).then((data) => {
+      fetchPosts({
+        skip: 0,
+        limit: 4,
+        fields: fieldsToFetch,
+      }).then((data) => {
         setRecentlySavedData(data);
       });
 
-      fetchPosts(tags.size === 0 ? 4 : 0, 100, Array.from(tags)).then(
-        (data) => {
-          setPostsData(data);
-          console.log(tags);
-          setSelectedTags(new Set(tags));
-        },
-      );
+      fetchPosts({
+        skip: tags.size === 0 ? 4 : 0,
+        limit: 100,
+        tags: Array.from(tags),
+        fields: fieldsToFetch,
+      }).then((data) => {
+        setPostsData(data);
+        setSelectedTags(new Set(tags));
+      });
 
       axios.post(`${SERVICE_URI}/all_tags`).then((response) => {
         setTags(response.data.map((tag: { id: string }) => tag.id));
@@ -80,14 +98,14 @@ const Home = () => {
     }
   };
 
-  const closePost = async () => {
+  const closePost = () => {
     setItemData(null);
     document.body.style.overflow = "scroll";
   };
 
   const removePost = (postId: string) => {
     setPostsData(postData.filter((post) => post.id !== postId));
-    setItemData(null);
+    closePost();
   };
 
   const toggleTag = (tag: string) => {
@@ -158,14 +176,37 @@ const Home = () => {
           );
         })}
       </div>
-      <div className="tags-search-container">
-        <TagsSearch
-          tags={tags}
-          selectedTags={selectedTags}
-          toggleTag={toggleTag}
-        />
-      </div>
+      {postData.length > 0 && (
+        <div className="tags-search-container">
+          <TagsSearch
+            tags={tags}
+            selectedTags={selectedTags}
+            toggleTag={toggleTag}
+          />
+        </div>
+      )}
       <div className="post-cards-container">
+        {selectedTags.size > 0 && (
+          <div
+            className="selected-tags-container"
+            style={{
+              display: "flex",
+            }}
+          >
+            {Array.from(selectedTags).map((tag, index) => (
+              <div
+                className="selected-tag-item"
+                onClick={() => toggleTag(tag)}
+                style={{
+                  display: "flex",
+                }}
+              >
+                <span key={index}>#{tag}</span>
+                <div>&nbsp;&nbsp;x</div>
+              </div>
+            ))}
+          </div>
+        )}
         <div>
           {postData.map((data, i) => {
             const postDate = data.timestamp.split("T")[0];
@@ -216,7 +257,7 @@ const Home = () => {
               {itemData && (
                 <PostView
                   postId={itemData.id}
-                  closePost={closePost}
+                  onClosePost={closePost}
                   onPostDelete={removePost}
                 />
               )}

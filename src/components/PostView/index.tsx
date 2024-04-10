@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 const PostView: React.FC<{
   postId: string;
   onPostDelete?: (postId: string) => void;
-  closePost: () => void;
-}> = ({ postId, onPostDelete, closePost }) => {
+  onClosePost?: () => void;
+}> = ({ postId, onPostDelete, onClosePost }) => {
   const [postData, setPostData] = useState<IPost | null>(null);
   const [postUrl, setPostUrl] = useState<string | null>(null);
   const [postContent, setPostContent] = useState<string | null>(null);
@@ -48,22 +48,10 @@ const PostView: React.FC<{
     setEditedContent(postContent);
   }, [postContent]);
 
-  const deletePost = () => {
-    if (onPostDelete)
-      axios
-        .post(`${SERVICE_URI}/delete`, { post_id: postId })
-        .then((response) => {
-          if (response.data.success) {
-            setPostData(null);
-            onPostDelete(postId);
-          }
-        });
-  };
-
   const searchTag = (tag: string) => {
     navigate(`/?tags=${tag}`);
     setPostData(null);
-    closePost();
+    onClosePost && onClosePost();
   };
 
   const editPost = () => {
@@ -152,15 +140,7 @@ const PostView: React.FC<{
                     readOnly={readOnly}
                     discard={discard}
                     updateCallback={getUpdatedPost}
-                    stringComponent={postData.content.concat(
-                      postData.content.concat(
-                        postData.content.concat(
-                          postData.content.concat(
-                            postData.content.concat(postData.content),
-                          ),
-                        ),
-                      ),
-                    )}
+                    stringComponent={postData.content}
                   />
                 )}
               </div>
@@ -223,6 +203,9 @@ const PostView: React.FC<{
                   onClick={discardEdit}
                 >
                   Discard Changes
+                </span>
+                <span onClick={() => onPostDelete && onPostDelete(postId)}>
+                  Delete
                 </span>
               </div>
             </div>

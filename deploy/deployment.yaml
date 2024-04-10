@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arkive-webapp-deployment
+  labels:
+    app: arkive-webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arkive-webapp
+  template:
+    metadata:
+      labels:
+        app: arkive-webapp
+    spec:
+      containers:
+      - name: arkive-webapp
+        image: rainmain/arkive-webapp:0.1
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 9080
+      imagePullSecrets:
+        - name: regcred

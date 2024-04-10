@@ -14,6 +14,7 @@ const TagsSearch: React.FC<TagsSearchProps> = ({
   toggleTag,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentTagsCount, setCurrentTagsCount] = useState(8);
 
   return (
     <div>
@@ -62,10 +63,11 @@ const TagsSearch: React.FC<TagsSearchProps> = ({
         {tags
           .sort((a, b) => a.localeCompare(b))
           .filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-          .slice(0, 8)
+          .slice(0, currentTagsCount)
           .map((tag, index) => {
             return (
               <span
+                className="tag-search-item"
                 style={{
                   display: "block",
                   cursor: "pointer",
@@ -82,6 +84,19 @@ const TagsSearch: React.FC<TagsSearchProps> = ({
               </span>
             );
           })}
+        {currentTagsCount < tags.length && (
+          <span
+            style={{
+              cursor: "pointer",
+              fontSize: "0.7rem",
+            }}
+            onClick={() => {
+              setCurrentTagsCount(currentTagsCount + 8);
+            }}
+          >
+            Show More
+          </span>
+        )}
       </div>
     </div>
   );

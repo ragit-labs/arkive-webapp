@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import NavigationBar from "../../components/Navigation";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -9,7 +8,6 @@ const Profile = () => {
   }, [user]);
   return (
     <>
-      <NavigationBar />
       <p>Name: {user?.full_name}</p>
       <img src={user?.display_picture_url} />
       <p>Email: {user?.email}</p>

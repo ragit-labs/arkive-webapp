@@ -48,7 +48,6 @@
 }
 
 .tags-container {
-  /* display: flex; */
   margin-bottom: 25px;
   text-align: center;
 }
@@ -70,8 +69,13 @@
 }
 
 .cta-url-container {
+  display: flex;
   margin-bottom: 1rem;
   cursor: pointer;
+}
+
+.uri-icon {
+  margin-right: 0.5rem;
 }
 
 .action-button-primary {
@@ -104,6 +108,10 @@
   background-color: #2e2c35;
 }
 
+.tags-container-side {
+  margin-bottom: 1rem;
+}
+
 .tags-side {
   font-size: 0.7rem;
   margin: 0.2rem 0.25rem 0.2rem 0rem;
@@ -124,6 +132,7 @@
 .post-save-date {
   font-size: 0.9rem;
   color: rgb(64, 64, 64);
+  margin-bottom: 1rem;
 }
 
 @media screen and (max-width: 1200px) {
