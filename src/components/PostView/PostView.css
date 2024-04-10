@@ -42,6 +42,11 @@
   width: 85%;
 }
 
+.post-url {
+  margin-top: 1rem;
+  text-align: center;
+}
+
 .tags-container {
   /* display: flex; */
   margin-bottom: 25px;
@@ -119,4 +124,40 @@
 .post-save-date {
   font-size: 0.9rem;
   color: rgb(64, 64, 64);
+}
+
+@media screen and (max-width: 1200px) {
+  .view-container {
+    border-radius: 0px;
+  }
+
+  .view-container-side {
+    display: none;
+  }
+
+  .post-url {
+    display: inline-block;
+    margin-top: 2rem;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .tags-container {
+    margin-top: 1rem;
+    text-align: left;
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    background-color: #cdedd5;
+    border: none;
+    border-radius: 4px;
+    margin: 0rem;
+    margin-right: 0.5rem;
+  }
+
+  .post-save-date {
+    margin-top: 0rem;
+    font-size: 0.9rem;
+  }
 }

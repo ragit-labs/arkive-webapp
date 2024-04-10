@@ -12,12 +12,15 @@ import { useNavigate } from "react-router-dom";
 const PostView: React.FC<{
   postId: string;
   onPostDelete?: (postId: string) => void;
-}> = ({ postId, onPostDelete }) => {
+  closePost: () => void;
+}> = ({ postId, onPostDelete, closePost }) => {
   const [postData, setPostData] = useState<IPost | null>(null);
   const [postUrl, setPostUrl] = useState<string | null>(null);
   const [postContent, setPostContent] = useState<string | null>(null);
   const [postTitle, setPostTitle] = useState<string | null>(null);
   const [editedContent, setEditedContent] = useState<string | null>(null);
+
+  const isDesktop = window.innerWidth >= 1200;
 
   const [readOnly, setreadOnly] = useState<boolean>(true);
 
@@ -60,6 +63,7 @@ const PostView: React.FC<{
   const searchTag = (tag: string) => {
     navigate(`/?tags=${tag}`);
     setPostData(null);
+    closePost();
   };
 
   const editPost = () => {
@@ -115,12 +119,11 @@ const PostView: React.FC<{
                   {postData.title}
                 </div>
               )}
-              {postData.user_id !== user?.id && (
+              {(!isDesktop || postData.user_id !== user?.id) && (
                 <>
-                  <h3 style={{ textAlign: "center", fontSize: "0.9rem" }}>
-                    {/* {postData && `${postData.extra_metadata?.author} | `} */}
+                  <a className="post-url" href={postData.url} target="_blank">
                     {postUrl}
-                  </h3>
+                  </a>
                   <div className="tags-container">
                     {postData.tags.map((tag, index) => (
                       <span key={index} className="tags">
@@ -129,6 +132,14 @@ const PostView: React.FC<{
                     ))}
                   </div>
                 </>
+              )}
+              {!isDesktop && (
+                <p className="post-save-date">
+                  Saved on{" "}
+                  <span style={{ fontWeight: 600 }}>
+                    {dateTimePretty(postData.timestamp)}
+                  </span>
+                </p>
               )}
             </div>
             <div className="view-container-content">

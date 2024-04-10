@@ -24,9 +24,6 @@ const RecentlySavedCard: React.FC<RecentlySavedCardProps> = ({
   id,
   cardStyle,
   cardClass,
-  bannerStyle,
-  bannerClass,
-  titleStyle,
   titleClass,
   tagsStyle,
   tagsClass,
@@ -35,38 +32,21 @@ const RecentlySavedCard: React.FC<RecentlySavedCardProps> = ({
   return (
     <div
       className={`recently-saved-card ${cardClass ?? ""}`}
-      style={{
-        position: "relative",
-        // display: "inline-block",
-        flex: "1",
-        width: "100%",
-        height: "100%",
-        ...cardStyle,
-      }}
+      style={cardStyle}
       onClick={() => onClick(id)}
     >
       <div
-        className={bannerClass}
+        className="recently-saved-card-banner"
         style={{
-          height: "65%",
-          width: "100%",
           backgroundImage: "url(" + banner + ")",
-          backgroundSize: "100% auto",
-          borderRadius: "3px",
-          ...bannerStyle,
         }}
       ></div>
-      <p
-        className={`recently-saved-card-title ${titleClass ?? ""}`}
-        style={{ marginBottom: "0.4rem", ...titleStyle }}
-      >
-        {title}
-      </p>
+      <p className={`recently-saved-card-title ${titleClass ?? ""}`}>{title}</p>
       {tags.map((tag) => {
         return (
           <span
             className={`recently-saved-card-tags ${tagsClass ?? ""}`}
-            style={{ ...tagsStyle }}
+            style={tagsStyle}
           >
             {tag}
           </span>

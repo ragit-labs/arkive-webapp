@@ -41,8 +41,6 @@ const Home = () => {
   const { user, loading: userLoading } = useAuth();
   const navigate = useNavigate();
 
-  const isDesktop = window.innerWidth > 1200;
-
   useEffect(() => {
     if (!userLoading) {
       !user && navigate("/login");
@@ -75,6 +73,7 @@ const Home = () => {
     try {
       const response = await axios.get(`${SERVICE_URI}/get/${postId}`);
       setItemData(response.data);
+      document.body.style.overflow = "hidden";
     } catch (error) {
       console.error("Error fetching item data:", error);
       setItemData(null);
@@ -83,6 +82,7 @@ const Home = () => {
 
   const closePost = async () => {
     setItemData(null);
+    document.body.style.overflow = "scroll";
   };
 
   const removePost = (postId: string) => {
@@ -121,34 +121,9 @@ const Home = () => {
 
   return (
     <>
-      <div
-        className="header-container"
-        style={{
-          position: "fixed",
-          width: "100%",
-          left: "0",
-          top: "0",
-          zIndex: 10,
-          backgroundColor: "#fff",
-        }}
-      >
-        <p
-          style={{
-            display: isDesktop ? "block" : "none",
-            position: "relative",
-            marginTop: "1rem",
-            fontSize: "1.5rem",
-            left: "0",
-          }}
-        >
-          lightcone
-        </p>
-        <div
-          className="search-container"
-          style={{
-            position: "relative",
-          }}
-        >
+      <div className="header-container">
+        <p className="header-title">lightcone</p>
+        <div className="search-container-outer">
           <Search
             searchItems={searchItems}
             onChange={searchPosts}
@@ -156,29 +131,8 @@ const Home = () => {
           />
         </div>
       </div>
-      <div
-        className="recently-saved-contaier"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          width: "88%",
-          left: "6%",
-          top: "10rem",
-          padding: "3rem 1rem 5rem 1rem",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #D9D9D9",
-        }}
-      >
-        <p
-          className="recently-saved-heading"
-          style={{
-            position: "absolute",
-            top: "0",
-            fontWeight: "500",
-          }}
-        >
-          Recently Saved
-        </p>
+      <div className="recently-saved-contaier">
+        <p className="recently-saved-heading">Recently Saved</p>
         {recentlySavedData.map((data, i) => {
           return (
             <RecentlySavedCard
@@ -204,30 +158,14 @@ const Home = () => {
           );
         })}
       </div>
-      <div
-        className="tags-search-container"
-        style={{
-          position: "absolute",
-          top: "36rem",
-          left: "8%",
-          borderRight: "1px solid #D9D9D9",
-        }}
-      >
+      <div className="tags-search-container">
         <TagsSearch
           tags={tags}
           selectedTags={selectedTags}
           toggleTag={toggleTag}
         />
       </div>
-      <div
-        className="home-container"
-        style={{
-          position: "relative",
-          top: "13rem",
-          left: "22%",
-          width: "70%",
-        }}
-      >
+      <div className="post-cards-container">
         <div>
           {postData.map((data, i) => {
             const postDate = data.timestamp.split("T")[0];
@@ -242,7 +180,10 @@ const Home = () => {
                   style={{
                     fontSize: "1.3rem",
                     fontWeight: "500",
-                    marginBottom: "3rem 0rem 3rem 0.6rem",
+                    margin:
+                      i == 0
+                        ? "0rem 0rem 1.5rem 0.6rem"
+                        : "3rem 0rem 1.5rem 0.6rem",
                   }}
                 >
                   {dateTimePretty(data.timestamp)}
@@ -267,39 +208,22 @@ const Home = () => {
           })}
         </div>
       </div>
-      <div
-        className="post-viewer-container"
-        style={{
-          display: itemData ? "block" : "none",
-          position: "fixed",
-          zIndex: 50,
-          top: "0",
-          left: "0",
-          width: "100vw",
-          overflow: "scroll",
-        }}
-      >
-        <div
-          className="post-viewer-bg"
-          onClick={closePost}
-          style={{
-            position: "fixed",
-            top: "0",
-            left: "0",
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgba(25, 25, 25, 0.14)",
-            backdropFilter: "blur(20px)",
-          }}
-        ></div>
-        <div className="post-viewer-container-inner">
-          <div className="post-viewer">
-            {itemData && (
-              <PostView postId={itemData.id} onPostDelete={removePost} />
-            )}
+      {itemData && (
+        <div className="post-viewer-container">
+          <div className="post-viewer-bg" onClick={closePost}></div>
+          <div className="post-viewer-container-inner">
+            <div className="post-viewer">
+              {itemData && (
+                <PostView
+                  postId={itemData.id}
+                  closePost={closePost}
+                  onPostDelete={removePost}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
