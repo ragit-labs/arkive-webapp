@@ -11,9 +11,15 @@
 .header-title {
   display: block;
   position: relative;
-  margin: 3rem 0rem 1rem 4rem;
+  margin: 3rem 0rem 1rem 5rem;
   font-size: 1.5rem;
   left: 0;
+}
+
+.home-container {
+  max-width: 1600px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .search-container-outer {
@@ -87,6 +93,13 @@
   background-color: rgba(25, 25, 25, 0.14);
   backdrop-filter: blur(20px);
   z-index: 51;
+}
+
+.post-viewer-container-inner {
+  max-width: 1600px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
 }
 
 .post-viewer {

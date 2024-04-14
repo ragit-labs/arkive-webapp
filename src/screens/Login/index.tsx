@@ -3,6 +3,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../../context/AuthContext";
 import { authenticate, getUser } from "../../utils/auth";
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
+import googleIcon from "../../assets/images/icons/Google.svg";
 
 const Login = () => {
   const { user: currentUser, setUser } = useAuth();
@@ -30,12 +32,14 @@ const Login = () => {
   });
 
   return (
-    <div>
-      <h2>Google Login</h2>
-      <br />
-      <br />
-      <button onClick={() => login()}>Sign in with Google 🚀 </button>
-    </div>
+    <>
+      <p className="login-header">lightcone</p>
+      <p className="login-title">Your Super Smart Knowledge Hub</p>
+      <button className="login-button" style={{}} onClick={() => login()}>
+        <img className="login-button-icon" src={googleIcon} />
+        Login with Google
+      </button>
+    </>
   );
 };
 

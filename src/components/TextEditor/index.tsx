@@ -156,14 +156,42 @@ export const TextEditor = ({
           </>
         ) : (
           <>
-            <div style={{backgroundImage: `url(${boldIcon})`}} className="tooltip-item" onClick={() => toggleInlineStyle("BOLD")}></div>
-            <div style={{backgroundImage: `url(${italicIcon})`}} className="tooltip-item" onClick={() => toggleInlineStyle("ITALIC")}></div>
-            <div style={{backgroundImage: `url(${underlineIcon})`}} className="tooltip-item" onClick={() => toggleInlineStyle("UNDERLINE")}></div>
-            <div style={{backgroundImage: `url(${codeIcon})`}} className="tooltip-item" onClick={() => toggleInlineStyle("CODE")}></div>
+            <div
+              style={{ backgroundImage: `url(${boldIcon})` }}
+              className="tooltip-item"
+              onClick={() => toggleInlineStyle("BOLD")}
+            ></div>
+            <div
+              style={{ backgroundImage: `url(${italicIcon})` }}
+              className="tooltip-item"
+              onClick={() => toggleInlineStyle("ITALIC")}
+            ></div>
+            <div
+              style={{ backgroundImage: `url(${underlineIcon})` }}
+              className="tooltip-item"
+              onClick={() => toggleInlineStyle("UNDERLINE")}
+            ></div>
+            <div
+              style={{ backgroundImage: `url(${codeIcon})` }}
+              className="tooltip-item"
+              onClick={() => toggleInlineStyle("CODE")}
+            ></div>
             {/* <div style={{backgroundImage: `url(${boldIcon})`}} className="tooltip-item" onClick={() => toggleBlockType("code-block")}></div> */}
-            <div style={{backgroundImage: `url(${unorderedListIcon})`}} className="tooltip-item" onClick={() => toggleBlockType("unordered-list-item")}></div>
-            <div style={{backgroundImage: `url(${orderedListIcon})`}} className="tooltip-item" onClick={() => toggleBlockType("ordered-list-item")}></div>
-            <div style={{backgroundImage: `url(${boldIcon})`, display: "none"}} className="tooltip-item" onClick={toggleLinkInput}></div>
+            <div
+              style={{ backgroundImage: `url(${unorderedListIcon})` }}
+              className="tooltip-item"
+              onClick={() => toggleBlockType("unordered-list-item")}
+            ></div>
+            <div
+              style={{ backgroundImage: `url(${orderedListIcon})` }}
+              className="tooltip-item"
+              onClick={() => toggleBlockType("ordered-list-item")}
+            ></div>
+            <div
+              style={{ backgroundImage: `url(${boldIcon})`, display: "none" }}
+              className="tooltip-item"
+              onClick={toggleLinkInput}
+            ></div>
           </>
         )}
       </div>

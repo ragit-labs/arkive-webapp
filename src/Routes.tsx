@@ -11,6 +11,7 @@ import Profile from "./screens/Profile";
 import Logout from "./screens/Logout";
 import Login from "./screens/Login";
 import { useEffect } from "react";
+import Test from "./screens/Test";
 
 export const ProtectedRoute = () => {
   const { user, loading } = useAuth();
@@ -32,6 +33,10 @@ const Routes = () => {
     {
       path: "/about-us",
       element: <div>About Us</div>,
+    },
+    {
+      path: "/test",
+      element: <Test />,
     },
     {
       path: "/login",

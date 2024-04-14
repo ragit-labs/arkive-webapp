@@ -204,7 +204,7 @@ const PostView: React.FC<{
                 >
                   Discard Changes
                 </span>
-                <span onClick={() => onPostDelete && onPostDelete(postId)}>
+                <span style={{display: "none"}} onClick={() => onPostDelete && onPostDelete(postId)}>
                   Delete
                 </span>
               </div>

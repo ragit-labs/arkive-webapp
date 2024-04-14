@@ -12,6 +12,7 @@ import PostLinkCard from "../../components/PostLinkCard";
 import TagsSearch from "../../components/TagsSearch";
 import Search from "../../components/Search";
 import "../../index.css";
+import defaultBanner from "../../assets/images/default-banner.svg";
 
 const fetchPosts = async ({
   skip,
@@ -139,114 +140,121 @@ const Home = () => {
 
   return (
     <>
-      <div className="header-container">
-        <p className="header-title">lightcone</p>
-        <div className="search-container-outer">
-          <Search
-            searchItems={searchItems}
-            onChange={searchPosts}
-            onItemClick={viewPost}
-          />
-        </div>
-      </div>
-      <div className="recently-saved-contaier">
-        <p className="recently-saved-heading">Recently Saved</p>
-        {recentlySavedData.map((data, i) => {
-          return (
-            <RecentlySavedCard
-              key={i}
-              title={data.title}
-              url={data.url}
-              banner={
-                "https://plus.unsplash.com/premium_photo-1710631508215-61d51dcacfb6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              }
-              id={data.id}
-              tags={data.tags
-                .slice(0, 3)
-                .map(
-                  (tag) => `#${tag.id.toLocaleLowerCase().replace(" ", "-")}`,
-                )}
-              cardStyle={{
-                width: "17.5rem",
-                height: "14.25rem",
-                marginLeft: i === 0 ? "0" : "0.75rem",
-              }}
-              onClick={() => viewPost(data.id)}
+      <div className="home-container">
+        <div className="header-container">
+          <p className="header-title">lightcone</p>
+          <div className="search-container-outer">
+            <Search
+              searchItems={searchItems}
+              onChange={searchPosts}
+              onItemClick={viewPost}
             />
-          );
-        })}
-      </div>
-      {postData.length > 0 && (
-        <div className="tags-search-container">
-          <TagsSearch
-            tags={tags}
-            selectedTags={selectedTags}
-            toggleTag={toggleTag}
-          />
-        </div>
-      )}
-      <div className="post-cards-container">
-        {selectedTags.size > 0 && (
-          <div
-            className="selected-tags-container"
-            style={{
-              display: "flex",
-            }}
-          >
-            {Array.from(selectedTags).map((tag, index) => (
-              <div
-                className="selected-tag-item"
-                onClick={() => toggleTag(tag)}
-                style={{
-                  display: "flex",
-                }}
-              >
-                <span key={index}>#{tag}</span>
-                <div>&nbsp;&nbsp;x</div>
-              </div>
-            ))}
           </div>
-        )}
-        <div>
-          {postData.map((data, i) => {
-            const postDate = data.timestamp.split("T")[0];
-
-            let dateHeading = null;
-            if (
-              selectedTags.size == 0 &&
-              (i === 0 || postDate !== postData[i - 1].timestamp.split("T")[0])
-            ) {
-              dateHeading = (
-                <p
-                  style={{
-                    fontSize: "1.3rem",
-                    fontWeight: "500",
-                    margin:
-                      i == 0
-                        ? "0rem 0rem 1.5rem 0.6rem"
-                        : "3rem 0rem 1.5rem 0.6rem",
-                  }}
-                >
-                  {dateTimePretty(data.timestamp)}
-                </p>
-              );
-            }
-
+        </div>
+        <div className="recently-saved-contaier">
+          <p className="recently-saved-heading">Recently Saved</p>
+          {recentlySavedData.map((data, i) => {
             return (
-              <React.Fragment key={i}>
-                {dateHeading}
-                <PostLinkCard
-                  title={data.title}
-                  url={data.url}
-                  tags={data.tags
-                    .slice(0, 3)
-                    .map((tag) => `#${tag.id.toLowerCase().replace(" ", "-")}`)}
-                  id={data.id}
-                  onClick={() => viewPost(data.id)}
-                />
-              </React.Fragment>
+              <RecentlySavedCard
+                key={i}
+                title={data.title}
+                url={data.url}
+                banner={
+                  data.banner === undefined || data.banner === ""
+                    ? defaultBanner
+                    : data.banner
+                }
+                id={data.id}
+                tags={data.tags
+                  .slice(0, 3)
+                  .map(
+                    (tag) => `#${tag.id.toLocaleLowerCase().replace(" ", "-")}`,
+                  )}
+                cardStyle={{
+                  width: "17.5rem",
+                  height: "14.25rem",
+                  marginLeft: i === 0 ? "0" : "0.75rem",
+                }}
+                onClick={() => viewPost(data.id)}
+              />
             );
           })}
+        </div>
+        {postData.length > 0 && (
+          <div className="tags-search-container">
+            <TagsSearch
+              tags={tags}
+              selectedTags={selectedTags}
+              toggleTag={toggleTag}
+            />
+          </div>
+        )}
+        <div className="post-cards-container">
+          {selectedTags.size > 0 && (
+            <div
+              className="selected-tags-container"
+              style={{
+                display: "flex",
+              }}
+            >
+              {Array.from(selectedTags).map((tag, index) => (
+                <div
+                  className="selected-tag-item"
+                  onClick={() => toggleTag(tag)}
+                  style={{
+                    display: "flex",
+                  }}
+                >
+                  <span key={index}>#{tag}</span>
+                  <div>&nbsp;&nbsp;x</div>
+                </div>
+              ))}
+            </div>
+          )}
+          <div>
+            {postData.map((data, i) => {
+              const postDate = data.timestamp.split("T")[0];
+
+              let dateHeading = null;
+              if (
+                selectedTags.size == 0 &&
+                (i === 0 ||
+                  postDate !== postData[i - 1].timestamp.split("T")[0])
+              ) {
+                dateHeading = (
+                  <p
+                    style={{
+                      fontSize: "1.3rem",
+                      fontWeight: "500",
+                      margin:
+                        i == 0
+                          ? "0rem 0rem 1.5rem 0.6rem"
+                          : "3rem 0rem 1.5rem 0.6rem",
+                    }}
+                  >
+                    {dateTimePretty(data.timestamp)}
+                  </p>
+                );
+              }
+
+              return (
+                <React.Fragment key={i}>
+                  {dateHeading}
+                  <PostLinkCard
+                    title={data.title}
+                    url={data.url}
+                    tags={data.tags
+                      .slice(0, 3)
+                      .map(
+                        (tag) => `#${tag.id.toLowerCase().replace(" ", "-")}`,
+                      )}
+                    id={data.id}
+                    onClick={() => viewPost(data.id)}
+                  />
+                </React.Fragment>
+              );
+            })}
+          </div>
         </div>
       </div>
       {itemData && (
