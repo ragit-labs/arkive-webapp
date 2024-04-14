@@ -35,10 +35,6 @@ const Routes = () => {
       element: <div>About Us</div>,
     },
     {
-      path: "/test",
-      element: <Test />,
-    },
-    {
       path: "/login",
       element: <Login />,
     },
@@ -51,6 +47,10 @@ const Routes = () => {
       children: [
         {
           path: "/",
+          element: <Test />,
+        },
+        {
+          path: "/Home",
           element: <Home />,
         },
         {
